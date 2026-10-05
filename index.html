@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NFC SMART</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      color: #17202a;
+    }
+
+    header {
+      background: #111827;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 28px;
+    }
+
+    header p {
+      margin-top: 6px;
+      color: #cbd5e1;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .welcome {
+      background: white;
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      margin-bottom: 25px;
+    }
+
+    .welcome h2 {
+      margin-bottom: 10px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: white;
+      padding: 22px;
+      border-radius: 16px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+    }
+
+    .card span {
+      display: block;
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .card strong {
+      font-size: 30px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>NFC SMART</h1>
+    <p>Gestão inteligente de QR Codes e NFC</p>
+  </header>
+
+  <main>
+
+    <section class="welcome">
+      <h2>Painel Administrativo</h2>
+      <p>Bem-vindo ao sistema de gerenciamento da NFC SMART.</p>
+    </section>
+
+    <section class="cards">
+
+      <div class="card">
+        <span>Total de placas</span>
+        <strong>0</strong>
+      </div>
+
+      <div class="card">
+        <span>Placas ativas</span>
+        <strong>0</strong>
+      </div>
+
+      <div class="card">
+        <span>Disponíveis</span>
+        <strong>0</strong>
+      </div>
+
+      <div class="card">
+        <span>Bloqueadas</span>
+        <strong>0</strong>
+      </div>
+
+    </section>
+
+  </main>
+
+</body>
+</html>
