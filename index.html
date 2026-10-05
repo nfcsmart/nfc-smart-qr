@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NFC SMART</title>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     * {
       box-sizing: border-box;
@@ -14,65 +16,148 @@
 
     body {
       font-family: Arial, sans-serif;
-      background: #f5f7fa;
+      background: #f4f6f8;
       color: #17202a;
+      min-height: 100vh;
+    }
+
+    .login {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 420px;
+      background: white;
+      padding: 35px 25px;
+      border-radius: 20px;
+      box-shadow: 0 10px 35px rgba(0,0,0,.10);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo h1 {
+      font-size: 32px;
+      color: #111827;
+    }
+
+    .logo p {
+      margin-top: 7px;
+      color: #64748b;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 7px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #2563eb;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #111827;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .error {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #fee2e2;
+      color: #991b1b;
+      display: none;
+      font-size: 14px;
+    }
+
+    .dashboard {
+      display: none;
+      min-height: 100vh;
     }
 
     header {
       background: #111827;
       color: white;
-      padding: 20px;
-      text-align: center;
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
     }
 
     header h1 {
-      font-size: 28px;
+      font-size: 22px;
     }
 
-    header p {
-      margin-top: 6px;
-      color: #cbd5e1;
+    .logout {
+      width: auto;
+      margin: 0;
+      padding: 10px 15px;
+      background: #374151;
+      font-size: 14px;
     }
 
     main {
       max-width: 1100px;
-      margin: 30px auto;
-      padding: 20px;
+      margin: auto;
+      padding: 25px 20px;
     }
 
     .welcome {
       background: white;
-      border-radius: 16px;
       padding: 25px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-      margin-bottom: 25px;
-    }
-
-    .welcome h2 {
-      margin-bottom: 10px;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.06);
     }
 
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 18px;
+      gap: 16px;
     }
 
     .card {
       background: white;
       padding: 22px;
       border-radius: 16px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+      box-shadow: 0 5px 20px rgba(0,0,0,.06);
     }
 
     .card span {
-      display: block;
       color: #64748b;
       font-size: 14px;
-      margin-bottom: 8px;
     }
 
     .card strong {
+      display: block;
+      margin-top: 8px;
       font-size: 30px;
     }
   </style>
@@ -80,43 +165,232 @@
 
 <body>
 
-  <header>
-    <h1>NFC SMART</h1>
-    <p>Gestão inteligente de QR Codes e NFC</p>
-  </header>
+  <!-- LOGIN -->
+  <section class="login" id="loginScreen">
+    <div class="login-box">
 
-  <main>
-
-    <section class="welcome">
-      <h2>Painel Administrativo</h2>
-      <p>Bem-vindo ao sistema de gerenciamento da NFC SMART.</p>
-    </section>
-
-    <section class="cards">
-
-      <div class="card">
-        <span>Total de placas</span>
-        <strong>0</strong>
+      <div class="logo">
+        <h1>NFC SMART</h1>
+        <p>Gestão inteligente de QR Codes e NFC</p>
       </div>
 
-      <div class="card">
-        <span>Placas ativas</span>
-        <strong>0</strong>
-      </div>
+      <form id="loginForm">
 
-      <div class="card">
-        <span>Disponíveis</span>
-        <strong>0</strong>
-      </div>
+        <label for="email">E-mail</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="Digite seu e-mail"
+          required
+        >
 
-      <div class="card">
-        <span>Bloqueadas</span>
-        <strong>0</strong>
-      </div>
+        <label for="password">Senha</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Digite sua senha"
+          required
+        >
 
-    </section>
+        <button type="submit">Entrar</button>
 
-  </main>
+        <div class="error" id="errorMessage"></div>
+
+      </form>
+
+    </div>
+  </section>
+
+
+  <!-- PAINEL -->
+  <section class="dashboard" id="dashboardScreen">
+
+    <header>
+      <h1>NFC SMART</h1>
+      <button class="logout" onclick="logout()">Sair</button>
+    </header>
+
+    <main>
+
+      <section class="welcome">
+        <h2 id="welcomeTitle">Painel Administrativo</h2>
+        <p id="welcomeText">
+          Bem-vindo ao sistema NFC SMART.
+        </p>
+      </section>
+
+      <section class="cards">
+
+        <div class="card">
+          <span>Total de placas</span>
+          <strong id="totalPlates">0</strong>
+        </div>
+
+        <div class="card">
+          <span>Placas ativas</span>
+          <strong id="activePlates">0</strong>
+        </div>
+
+        <div class="card">
+          <span>Disponíveis</span>
+          <strong id="availablePlates">0</strong>
+        </div>
+
+        <div class="card">
+          <span>Bloqueadas</span>
+          <strong id="blockedPlates">0</strong>
+        </div>
+
+      </section>
+
+    </main>
+
+  </section>
+
+
+  <script>
+
+    const SUPABASE_URL = https://jdccfnseqkbfiimnvpxm.supabase.co/rest/v1/
+    const SUPABASE_KEY = sb_publishable_rIr1jwOEAN3d_t1dDzuYuw_JDvI6FEW
+
+    const supabaseClient = supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+
+    const loginForm = document.getElementById("loginForm");
+    const loginScreen = document.getElementById("loginScreen");
+    const dashboardScreen = document.getElementById("dashboardScreen");
+    const errorMessage = document.getElementById("errorMessage");
+
+
+    loginForm.addEventListener("submit", async function(event) {
+
+      event.preventDefault();
+
+      errorMessage.style.display = "none";
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+      if (error) {
+
+        errorMessage.textContent =
+          "E-mail ou senha incorretos.";
+
+        errorMessage.style.display = "block";
+
+        return;
+      }
+
+      await showDashboard();
+
+    });
+
+
+    async function showDashboard() {
+
+      const {
+        data: { user }
+      } = await supabaseClient.auth.getUser();
+
+      if (!user) return;
+
+      loginScreen.style.display = "none";
+      dashboardScreen.style.display = "block";
+
+      const { data: profile } =
+        await supabaseClient
+          .from("profiles")
+          .select("full_name, role")
+          .eq("id", user.id)
+          .single();
+
+      if (profile) {
+
+        if (profile.full_name) {
+          document.getElementById("welcomeText").textContent =
+            "Bem-vindo, " + profile.full_name + "!";
+        }
+
+        if (profile.role === "admin") {
+          document.getElementById("welcomeTitle").textContent =
+            "Painel Administrativo";
+        } else {
+          document.getElementById("welcomeTitle").textContent =
+            "Painel do Revendedor";
+        }
+
+      }
+
+      await loadPlateNumbers();
+    }
+
+
+    async function loadPlateNumbers() {
+
+      const { data, error } =
+        await supabaseClient
+          .from("plates")
+          .select("status");
+
+      if (error) {
+        console.log(error);
+        return;
+      }
+
+      const total = data.length;
+
+      const active =
+        data.filter(p => p.status === "active").length;
+
+      const available =
+        data.filter(p => p.status === "available").length;
+
+      const blocked =
+        data.filter(p => p.status === "blocked").length;
+
+      document.getElementById("totalPlates").textContent = total;
+      document.getElementById("activePlates").textContent = active;
+      document.getElementById("availablePlates").textContent = available;
+      document.getElementById("blockedPlates").textContent = blocked;
+    }
+
+
+    async function logout() {
+
+      await supabaseClient.auth.signOut();
+
+      dashboardScreen.style.display = "none";
+      loginScreen.style.display = "flex";
+
+      document.getElementById("password").value = "";
+    }
+
+
+    async function checkSession() {
+
+      const {
+        data: { session }
+      } = await supabaseClient.auth.getSession();
+
+      if (session) {
+        await showDashboard();
+      }
+
+    }
+
+
+    checkSession();
+
+  </script>
 
 </body>
 </html>
